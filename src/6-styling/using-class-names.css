@@ -1,0 +1,7 @@
+.my-class {
+  color: red;
+}
+
+.my-class:hover {
+  color: lightcoral;
+}

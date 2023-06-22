@@ -1,0 +1,7 @@
+.otherClass {
+  color: green;
+}
+
+.otherClass:hover {
+  color: lightgreen;
+}
