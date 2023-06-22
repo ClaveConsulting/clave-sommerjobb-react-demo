@@ -1,5 +1,6 @@
 import "./using-class-names.css";
 import classes from "./imported-classes.module.css";
+import { useState } from "react";
 
 export function Styling() {
   return (
@@ -8,7 +9,7 @@ export function Styling() {
       <ClassBasedStyling />
       <hr />
       <h2>CSS import styling</h2>
-      <CssImportStyling />
+      <CssModuleStyling />
       <hr />
       <h2>CSS-in-JS</h2>
       <CssInJsStyling />
@@ -20,10 +21,17 @@ function ClassBasedStyling() {
   return <p className="my-class">Red text</p>;
 }
 
-function CssImportStyling() {
+function CssModuleStyling() {
   return <p className={classes.otherClass}>Green text</p>;
 }
 
 function CssInJsStyling() {
-  return <p css={{ color: "blue", "&:hover": { color: "cyan" } }}>Blue text</p>;
+  const [color, setColor] = useState("blue");
+  const css = { color: color, "&:hover": { color: "cyan" } };
+  return (
+    <div>
+      <p css={css}>Blue text</p>
+      <button onClick={() => setColor("red")}>Make it red</button>
+    </div>
+  );
 }

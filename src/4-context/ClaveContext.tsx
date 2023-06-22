@@ -3,24 +3,27 @@ import { ReactNode, createContext, useContext, useState } from "react";
 export function ClaveContext() {
   return (
     <div>
-      <Provider>
+      <Consumer />
+      <StateKeeper>
         Parent counter: <Consumer />
         <hr />
-        <Provider>
+        <StateKeeper>
           Child counter: <Consumer />
-        </Provider>
-      </Provider>
+        </StateKeeper>
+      </StateKeeper>
     </div>
   );
 }
 
 interface ICounterContext {
-  value: number;  
+  value: number;
   onAdd(): void;
+  onReset(): void;
 }
+
 const CounterContext = createContext<ICounterContext | null>(null);
 
-function Provider({ children }: { children: ReactNode }) {
+function StateKeeper({ children }: { children: ReactNode }) {
   const [value, setValue] = useState(0);
 
   function onAdd() {
@@ -28,7 +31,9 @@ function Provider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <CounterContext.Provider value={{ value, onAdd }}>
+    <CounterContext.Provider
+      value={{ value, onAdd, onReset: () => setValue(0) }}
+    >
       {children}
     </CounterContext.Provider>
   );
@@ -36,8 +41,8 @@ function Provider({ children }: { children: ReactNode }) {
 
 function Consumer() {
   const context = useContext(CounterContext);
-  if (!context) throw new Error("No CounterContext found!");
-  const { value, onAdd } = context;
+  if (!context) throw new Error("No CounterContext found");
+  const { value, onAdd, onReset } = context;
 
   return (
     <div>
@@ -45,6 +50,7 @@ function Consumer() {
         Value: <code>{value}</code>
       </p>
       <button onClick={onAdd}>Add</button>
+      <button onClick={onReset}>Reset</button>
     </div>
   );
 }

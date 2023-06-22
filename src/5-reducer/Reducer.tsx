@@ -1,14 +1,16 @@
 import { useReducer } from "react";
 import { Redux } from "./Redux";
 
-type Action = "add" | "subtract";
+type Action =
+  | { type: "add"; delta: number }
+  | { type: "subtract"; delta: number };
 
 function reducer(prev: number, action: Action) {
-  switch (action) {
+  switch (action.type) {
     case "add":
-      return prev + 1;
+      return prev + action.delta;
     case "subtract":
-      return prev - 1;
+      return prev - action.delta;
   }
 }
 
@@ -21,8 +23,12 @@ export function Reducer() {
       <p>
         Current count: <code>{state}</code>
       </p>
-      <button onClick={() => dispatch("add")}>Increment</button>
-      <button onClick={() => dispatch("subtract")}>Decrement</button>
+      <button onClick={() => dispatch({ type: "add", delta: 10 })}>
+        Increment
+      </button>
+      <button onClick={() => dispatch({ type: "subtract", delta: 10 })}>
+        Decrement
+      </button>
       <hr />
       <h2>Redux</h2>
       <Redux />

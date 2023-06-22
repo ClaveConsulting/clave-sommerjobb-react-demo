@@ -15,13 +15,13 @@ export function Props() {
   );
 }
 
-function ChildComponent({
-  value,
-  message,
-}: {
-  value: number;
+interface ChildComponentProps {
+  value?: number;
   message: string;
-}) {
+}
+
+function ChildComponent(props: ChildComponentProps) {
+  const { value, message } = props;
   return (
     <div>
       <strong>
